@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Ride } from './entities/ride.entity';
+import { FindOneOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class RideService {
+  constructor(
+    @InjectRepository(Ride)
+    private rideRepository: Repository<Ride>,
+  ) {}
+
   create(createRideDto: CreateRideDto) {
-    return 'This action adds a new ride';
+    return this.rideRepository.save(createRideDto);
   }
 
-  findAll() {
-    return `This action returns all ride`;
+  async findAll(): Promise<Ride[]> {
+    return this.rideRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ride`;
+  async findOne(id: number) {
+    const options: FindOneOptions<Ride> = {
+      where: { id },
+    };
+
+    return this.rideRepository.findOne(options);
   }
 
-  update(id: number, updateRideDto: UpdateRideDto) {
-    return `This action updates a #${id} ride`;
+  async update(id: number, updateRideDto: UpdateRideDto) {
+    await this.rideRepository.update(id, updateRideDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ride`;
+  async remove(id: number) {
+    return this.rideRepository.delete(id);
   }
 }

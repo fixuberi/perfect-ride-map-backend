@@ -1,1 +1,3 @@
-export class CreateRideDto {}
+export class CreateRideDto {
+  date: string;
+}
