@@ -6,10 +6,11 @@ import { RideModule } from './ride/ride.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import configFabric from 'typeorm.config';
 import { Ride } from './ride/entities/ride.entity';
+import { RideLocation } from './ride/entities/ride-location.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(configFabric([Ride])),
+    TypeOrmModule.forRoot(configFabric([Ride, RideLocation])),
     DevtoolsModule.register({
       port: 8222,
       http: process.env.NODE_ENV !== 'production',
