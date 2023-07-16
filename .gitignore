@@ -34,3 +34,6 @@ graph.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+.env
+package-lock.json

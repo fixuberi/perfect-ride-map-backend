@@ -16,10 +16,10 @@ export class RideService {
   ) {}
 
   async create(createRideDto: CreateRideDto) {
-    const { locations, ...rideData } = createRideDto;
+    const { rideHistory, ...rideData } = createRideDto;
 
     const ride = this.rideRepository.create(rideData);
-    ride.locations = locations.map((locationData) =>
+    ride.locations = rideHistory.map((locationData) =>
       this.rideLocationRepository.create(locationData),
     );
 
