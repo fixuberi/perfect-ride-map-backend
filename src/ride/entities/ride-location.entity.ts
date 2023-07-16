@@ -14,8 +14,8 @@ export class RideLocation {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   altitude: number;
 
-  @Column({ type: 'timestamp' })
-  timestamp: number;
+  @Column({ type: 'timestamptz' })
+  timestamp: Date;
 
   @Column({ type: 'decimal', precision: 6, scale: 2, nullable: true })
   speed: number;

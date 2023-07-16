@@ -6,11 +6,11 @@ export class Ride {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp' })
-  startDate: string;
+  @Column({ type: 'timestamptz' })
+  startDate: Date;
 
-  @Column({ type: 'timestamp' })
-  endDate: string;
+  @Column({ type: 'timestamptz' })
+  endDate: Date;
 
   @OneToMany(() => RideLocation, (location) => location.ride, { cascade: true })
   locations: RideLocation[];
