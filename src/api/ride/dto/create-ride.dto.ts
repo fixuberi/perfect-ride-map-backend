@@ -1,7 +1,7 @@
 export class CreateRideDto {
   startDate: string;
   endDate: string;
-  locations: RideLocation[];
+  rideHistory: RideLocation[];
 }
 
 export interface RidePoint {
@@ -13,4 +13,8 @@ export interface RidePoint {
 export interface RideLocation extends RidePoint {
   timestamp: number;
   speed: number;
+}
+
+export interface RideLocationWwithHeartRate extends RideLocation {
+  heartRate: number | null;
 }

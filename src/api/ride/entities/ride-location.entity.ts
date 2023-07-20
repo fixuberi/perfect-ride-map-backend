@@ -20,6 +20,9 @@ export class RideLocation {
   @Column({ type: 'decimal', precision: 6, scale: 2, nullable: true })
   speed: number;
 
+  @Column({ type: 'integer', nullable: true })
+  heartRate: number | null;
+
   @ManyToOne(() => Ride, (ride) => ride.locations)
   ride: Ride;
 }
