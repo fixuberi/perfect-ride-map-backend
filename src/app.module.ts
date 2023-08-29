@@ -2,9 +2,9 @@ import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RideModule } from './ride/ride.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RideModule } from './api/ride/ride.module';
 
 @Module({
   imports: [

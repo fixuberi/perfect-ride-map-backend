@@ -3,6 +3,13 @@ import { AppModule } from './app.module';
 import { writeFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
 
+const CORS_OPTIONS: CorsOptions = {
+  origin: 'http://localhost:4200',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Origin,Accept,Content-Type,Authorization',
+  credentials: true,
+};
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     snapshot: true,
