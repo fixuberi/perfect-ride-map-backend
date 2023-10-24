@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ envFilePath: './env/.env' }),
     DatabaseModule,
     DevtoolsModule.register({
       port: 8222,
