@@ -4,10 +4,7 @@ import { CoreModule } from '@common/core.module';
 import { FeaturesModule } from '@features/features.module';
 
 @Module({
-  imports: [
-    CoreModule,
-    FeaturesModule,
-  ],
+  imports: [CoreModule, FeaturesModule],
   controllers: [],
   providers: [],
 })
