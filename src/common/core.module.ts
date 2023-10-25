@@ -6,7 +6,7 @@ import { AppDevtoolsModule } from '@common/utils/app-devtools.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: './env/.env' }),
+    ConfigModule.forRoot({ envFilePath: 'src/env/.env' }),
     DatabaseModule,
     AppDevtoolsModule,
   ],
