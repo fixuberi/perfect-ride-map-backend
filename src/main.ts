@@ -1,7 +1,9 @@
 import { NestFactory, PartialGraphHost } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { writeFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
+import { writeFileSync } from 'fs';
+
+import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -9,6 +11,7 @@ async function bootstrap() {
     abortOnError: false,
   });
 
+  app.use(cookieParser());
   app.enableCors();
   app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);

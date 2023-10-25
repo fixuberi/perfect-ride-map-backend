@@ -7,11 +7,15 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+
+import JwtAuthenticationGuard from '@common/guards/jwt-authentication.guard';
 import { RideService } from './ride.service';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
 
 @Controller('ride')
+@UseGuards(JwtAuthenticationGuard)
 export class RideController {
   constructor(private readonly rideService: RideService) {}
 
