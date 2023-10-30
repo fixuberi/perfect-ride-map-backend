@@ -36,4 +36,4 @@ graph.json
 !.vscode/extensions.json
 
 .env
-package-lock.json
+.env.*
