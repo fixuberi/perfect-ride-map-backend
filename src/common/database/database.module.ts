@@ -18,6 +18,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true,
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['src/migrations/*{.ts,.js}'],
+        ssl:
+          process.env.NODE_ENV !== 'production'
+            ? {
+                rejectUnauthorized: false,
+              }
+            : {},
       }),
     }),
   ],
