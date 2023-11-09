@@ -1,5 +1,12 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { RideLocation } from './ride-location.entity';
+import User from '@features/users/user.entity';
 
 @Entity()
 export class Ride {
@@ -14,4 +21,7 @@ export class Ride {
 
   @OneToMany(() => RideLocation, (location) => location.ride, { cascade: true })
   locations: RideLocation[];
+
+  @ManyToOne(() => User, (user) => user.rides)
+  user: User;
 }

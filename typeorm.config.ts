@@ -1,21 +1,20 @@
 import { DataSource } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
+import * as fs from 'fs';
 
-config();
-
-const configService = new ConfigService();
+config({ path: './src/env/.env.prod' });
 
 export default new DataSource({
   type: 'postgres',
-  url: configService.get('DB_URI'),
-  host: configService.get('DB_HOST'),
-  port: configService.get('DB_PORT'),
-  username: configService.get('DB_USERNAME'),
-  password: configService.get('DB_PASSWORD'),
-  database: configService.get('DB_NAME'),
-  entities: [],
+  host: process.env.DB_HOST,
+  port: +process.env.DB_PORT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  entities: ['dist/**/*.entity{.ts,.js}'],
+  migrations: ['src/migrations/*{.ts,.js}'],
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
+    ca: fs.readFileSync('./global-bundle.pem').toString(),
   },
 });

@@ -37,3 +37,4 @@ graph.json
 
 .env
 .env.*
+*.pem
