@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Ride } from '@features/ride/entities/ride.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class User {
@@ -11,8 +12,11 @@ class User {
   @Column()
   public name: string;
 
-  @Column()
+  @Column({ select: false })
   public password: string;
+
+  @OneToMany(() => Ride, (ride) => ride.user)
+  rides: Ride[];
 }
 
 export default User;

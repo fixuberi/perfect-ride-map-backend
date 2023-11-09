@@ -1,9 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { FindOneOptions, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import User from '@features/users/user.entity';
+
 import { CreateRideDto } from './dto/create-ride.dto';
 import { UpdateRideDto } from './dto/update-ride.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Ride } from './entities/ride.entity';
-import { FindOneOptions, Repository } from 'typeorm';
 import { RideLocation } from './entities/ride-location.entity';
 
 @Injectable()
@@ -15,10 +18,23 @@ export class RideService {
     private readonly rideLocationRepository: Repository<RideLocation>,
   ) {}
 
-  async create(createRideDto: CreateRideDto) {
+  async findAll(user: User): Promise<Ride[]> {
+    return this.rideRepository.find({
+      relations: ['locations'],
+      where: { user },
+    });
+  }
+
+  async findOne(id: number, user: User) {
+    await this.verifyUserRide(id, user);
+
+    return this.findOneById(id);
+  }
+
+  async create(createRideDto: CreateRideDto, user: User) {
     const { rideHistory, ...rideData } = createRideDto;
 
-    const ride = this.rideRepository.create(rideData);
+    const ride = this.rideRepository.create({ ...rideData, user });
     ride.locations = rideHistory.map((locationData) =>
       this.rideLocationRepository.create(locationData),
     );
@@ -26,13 +42,20 @@ export class RideService {
     return this.rideRepository.save(ride);
   }
 
-  async findAll(): Promise<Ride[]> {
-    return this.rideRepository.find({
-      relations: ['locations'],
-    });
+  async update(id: number, updateRideDto: UpdateRideDto, user: User) {
+    await this.verifyUserRide(id, user);
+    await this.rideRepository.update(id, updateRideDto);
+
+    return this.findOneById(id);
   }
 
-  async findOne(id: number) {
+  async remove(id: number, user: User) {
+    await this.verifyUserRide(id, user);
+
+    return this.rideRepository.delete(id);
+  }
+
+  private async findOneById(id: number) {
     const options: FindOneOptions<Ride> = {
       where: { id },
       relations: ['locations'],
@@ -41,12 +64,15 @@ export class RideService {
     return this.rideRepository.findOne(options);
   }
 
-  async update(id: number, updateRideDto: UpdateRideDto) {
-    await this.rideRepository.update(id, updateRideDto);
-    return this.findOne(id);
-  }
+  private async verifyUserRide(id: number, user: User): Promise<boolean> {
+    const isRideExists = await this.rideRepository.exist({
+      where: { id, user },
+    });
 
-  async remove(id: number) {
-    return this.rideRepository.delete(id);
+    if (!isRideExists) {
+      throw new NotFoundException('Ride not found or not owned by user');
+    }
+
+    return isRideExists;
   }
 }

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -15,15 +16,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: true,
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['src/migrations/*{.ts,.js}'],
-        ssl:
-          process.env.NODE_ENV !== 'production'
-            ? {
-                rejectUnauthorized: false,
-              }
-            : {},
+        ssl: {
+          rejectUnauthorized: true,
+          ca: fs.readFileSync('src/../global-bundle.pem').toString(),
+        },
       }),
     }),
   ],
